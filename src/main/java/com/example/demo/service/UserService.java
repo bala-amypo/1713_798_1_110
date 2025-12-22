@@ -1,12 +1,15 @@
 package com.example.demo.service;
-import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.UserRepository;
+import org.springframework.stereotype.Service;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ValidationException;
+import com.example.demo.repository.UserRepository;
+
 import java.util.List;
+
 @Service
 public class UserService {
+
     private final UserRepository repo;
 
     public UserService(UserRepository repo) {
@@ -14,8 +17,9 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        if (repo.existsByEmail(user.getEmail()))
+        if (repo.existsByEmail(user.getEmail())) {
             throw new ValidationException("email exists");
+        }
         return repo.save(user);
     }
 
