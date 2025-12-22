@@ -4,7 +4,7 @@ import com.example.demo.repository.*;
 import com.example.demo.entity.*;
 
 import java.util.List;
-
+@Service
 public class ResourceAllocationService {
     private final ResourceRequestRepository reqRepo;
     private final ResourceRepository resRepo;

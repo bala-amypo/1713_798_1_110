@@ -4,7 +4,7 @@ import com.example.demo.repository.*;
 import com.example.demo.entity.*;
 import com.example.demo.exception.ValidationException;
 import java.util.List;
-
+@Service
 public class ResourceRequestService {
     private final ResourceRequestRepository reqRepo;
     private final UserRepository userRepo;

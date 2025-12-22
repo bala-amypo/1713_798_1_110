@@ -4,7 +4,7 @@ import com.example.demo.repository.ResourceRepository;
 import com.example.demo.entity.Resource;
 import com.example.demo.exception.ValidationException;
 import java.util.List;
-
+@Service
 public class ResourceService {
     private final ResourceRepository repo;
 

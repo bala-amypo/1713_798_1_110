@@ -4,7 +4,7 @@ import com.example.demo.repository.AllocationRuleRepository;
 import com.example.demo.entity.AllocationRule;
 import com.example.demo.exception.ValidationException;
 import java.util.List;
-
+@Service
 public class AllocationRuleService {
     private final AllocationRuleRepository repo;
 
