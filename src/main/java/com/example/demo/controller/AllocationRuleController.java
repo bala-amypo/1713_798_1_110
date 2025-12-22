@@ -28,4 +28,7 @@ public class AllocationRuleController {
 
     @GetMapping("/{id}")
     public AllocationRule getRule(@PathVariable Long id) {
-        return serv
+        return service.getRule(id);
+    }
+
+}
