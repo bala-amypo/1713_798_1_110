@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import org.springframework.stereotype.Service;
 import com.example.demo.repository.AllocationRuleRepository;
 import com.example.demo.entity.AllocationRule;
 import com.example.demo.exception.ValidationException;
