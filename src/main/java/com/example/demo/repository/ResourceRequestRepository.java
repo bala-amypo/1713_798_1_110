@@ -7,6 +7,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ResourceRequestRepository extends JpaRepository<ResourceRequest, Long> {
-    List<ResourceRequest> findByRequestedBy_Id(Long userid);
-    List<ResourceRequest> findByStartTimeBetween(LocalDateTime start, LocalDateTime end);
+
+    List<ResourceRequest> findByRequestedById(Long userId);
+
+    List<ResourceRequest> findByStartTimeBetween(
+            LocalDateTime start,
+            LocalDateTime end
+    );
 }
