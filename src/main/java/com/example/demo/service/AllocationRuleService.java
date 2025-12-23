@@ -1,29 +1,13 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.repository.AllocationRuleRepository;
 import com.example.demo.entity.AllocationRule;
-import com.example.demo.exception.ValidationException;
 import java.util.List;
-@Service
-public class AllocationRuleService {
-    private final AllocationRuleRepository repo;
 
-    public AllocationRuleService(AllocationRuleRepository repo) {
-        this.repo = repo;
-    }
+public interface AllocationRuleService {
 
-    public AllocationRule createRule(AllocationRule r) {
-        if (repo.existsByRuleName(r.getRuleName()))
-            throw new ValidationException("rule exists");
-        return repo.save(r);
-    }
+    AllocationRule createRule(AllocationRule rule);
 
-    public AllocationRule getRule(Long id) {
-        return repo.findById(id).orElseThrow();
-    }
+    AllocationRule getRule(Long id);
 
-    public List<AllocationRule> getAllRules() {
-        return repo.findAll();
-    }
+    List<AllocationRule> getAllRules();
 }
