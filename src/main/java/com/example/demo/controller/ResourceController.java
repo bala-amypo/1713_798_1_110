@@ -10,24 +10,24 @@ import java.util.List;
 @RequestMapping("/api/resources")
 public class ResourceController {
 
-    private final ResourceService service;
+    private final ResourceService resourceService;
 
-    public ResourceController(ResourceService service) {
-        this.service = service;
+    public ResourceController(ResourceService resourceService) {
+        this.resourceService = resourceService;
     }
 
     @PostMapping
     public Resource create(@RequestBody Resource resource) {
-        return service.createResource(resource);
+        return resourceService.createResource(resource);
     }
 
     @GetMapping
     public List<Resource> getAll() {
-        return service.getAllResources();
+        return resourceService.getAllResources();
     }
 
     @GetMapping("/{id}")
-    public Resource getOne(@PathVariable Long id) {
-        return service.getResource(id);
+    public Resource getById(@PathVariable Long id) {
+        return resourceService.getResource(id);
     }
 }

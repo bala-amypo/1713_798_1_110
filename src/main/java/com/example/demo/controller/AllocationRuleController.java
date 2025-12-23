@@ -10,25 +10,24 @@ import java.util.List;
 @RequestMapping("/api/rules")
 public class AllocationRuleController {
 
-    private final AllocationRuleService service;
+    private final AllocationRuleService ruleService;
 
-    public AllocationRuleController(AllocationRuleService service) {
-        this.service = service;
+    public AllocationRuleController(AllocationRuleService ruleService) {
+        this.ruleService = ruleService;
     }
 
     @PostMapping
-    public AllocationRule createRule(@RequestBody AllocationRule rule) {
-        return service.createRule(rule);
+    public AllocationRule create(@RequestBody AllocationRule rule) {
+        return ruleService.createRule(rule);
     }
 
     @GetMapping
-    public List<AllocationRule> getAllRules() {
-        return service.getAllRules();
+    public List<AllocationRule> getAll() {
+        return ruleService.getAllRules();
     }
 
     @GetMapping("/{id}")
-    public AllocationRule getRule(@PathVariable Long id) {
-        return service.getRule(id);
+    public AllocationRule getById(@PathVariable Long id) {
+        return ruleService.getRule(id);
     }
-
 }
