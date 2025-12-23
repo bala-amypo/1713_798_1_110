@@ -4,28 +4,43 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "allocation_rules")
 public class AllocationRule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String ruleName;
 
     private String ruleType;
+
     private Integer priorityWeight;
-    private LocalDateTime createdAt = LocalDateTime.now();
 
-    // getters & setters
+    private LocalDateTime createdAt;
+
+    public AllocationRule() {}
+
+    public AllocationRule(String ruleName,
+                          String ruleType,
+                          Integer priorityWeight) {
+        this.ruleName = ruleName;
+        this.ruleType = ruleType;
+        this.priorityWeight = priorityWeight;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // Getters and Setters
     public Long getId() { return id; }
-
     public String getRuleName() { return ruleName; }
     public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-
     public String getRuleType() { return ruleType; }
     public void setRuleType(String ruleType) { this.ruleType = ruleType; }
-
     public Integer getPriorityWeight() { return priorityWeight; }
     public void setPriorityWeight(Integer priorityWeight) { this.priorityWeight = priorityWeight; }
 }
