@@ -1,31 +1,13 @@
 package com.example.demo.service;
-import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.ResourceRepository;
 import com.example.demo.entity.Resource;
-import com.example.demo.exception.ValidationException;
 import java.util.List;
-@Service
-public class ResourceService {
-    private final ResourceRepository repo;
 
-    public ResourceService(ResourceRepository repo) {
-        this.repo = repo;
-    }
+public interface ResourceService {
 
-    public Resource createResource(Resource r) {
-        if (repo.existsByResourceName(r.getResourceName()))
-            throw new ValidationException("resource exists");
-        if (r.getCapacity() < 1)
-            throw new ValidationException("capacity exists");
-        return repo.save(r);
-    }
+    Resource createResource(Resource resource);
 
-    public Resource getResource(Long id) {
-        return repo.findById(id).orElseThrow();
-    }
+    Resource getResource(Long id);
 
-    public List<Resource> getAllResources() {
-        return repo.findAll();
-    }
+    List<Resource> getAllResources();
 }

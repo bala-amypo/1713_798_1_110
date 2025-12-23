@@ -1,33 +1,13 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
 import com.example.demo.entity.User;
-import com.example.demo.exception.ValidationException;
-import com.example.demo.repository.UserRepository;
-
 import java.util.List;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    private final UserRepository repo;
+    User registerUser(User user);
 
-    public UserService(UserRepository repo) {
-        this.repo = repo;
-    }
+    User getUser(Long id);
 
-    public User registerUser(User user) {
-        if (repo.existsByEmail(user.getEmail())) {
-            throw new ValidationException("email exists");
-        }
-        return repo.save(user);
-    }
-
-    public User getUser(Long id) {
-        return repo.findById(id).orElseThrow();
-    }
-
-    public List<User> getAllUsers() {
-        return repo.findAll();
-    }
+    List<User> getAllUsers();
 }
