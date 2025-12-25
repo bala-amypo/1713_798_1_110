@@ -1,28 +1,22 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
+import com.example.demo.entity.ResourceRequest;
 import com.example.demo.service.ResourceRequestService;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class ResourceRequestServiceImpl implements ResourceRequestService {
 
-    private final ResourceRequestRepository repo;
-    private final UserRepository userRepo;
-
-    public ResourceRequestServiceImpl(ResourceRequestRepository repo, UserRepository userRepo) {
-        this.repo = repo;
-        this.userRepo = userRepo;
+    @Override
+    public ResourceRequest createRequest(ResourceRequest request) {
+        request.setStatus("PENDING");
+        return request;
     }
 
-    public ResourceRequest createRequest(Long userId, ResourceRequest r) {
-        User u = userRepo.findById(userId).orElseThrow();
-        r.setRequestedBy(u);
-        return repo.save(r);
-    }
-
-    public ResourceRequest updateRequestStatus(Long id, String status) {
-        ResourceRequest r = repo.findById(id).orElseThrow();
-        r.setStatus(status);
-        return repo.save(r);
+    @Override
+    public List<ResourceRequest> getAllRequests() {
+        return List.of();
     }
 }

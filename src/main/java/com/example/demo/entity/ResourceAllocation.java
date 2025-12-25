@@ -1,27 +1,23 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ResourceAllocation {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
     private Resource resource;
 
-    @OneToOne
+    @ManyToOne
     private ResourceRequest request;
 
-    private LocalDateTime allocatedAt;
-    private Boolean conflictFlag;
-    private String notes;
+    private boolean conflictFlag;
 
-    public ResourceAllocation() {
-        allocatedAt = LocalDateTime.now();
-    }
-
-    // getters & setters
+    public void setResource(Resource resource) { this.resource = resource; }
+    public void setRequest(ResourceRequest request) { this.request = request; }
+    public void setConflictFlag(boolean conflictFlag) { this.conflictFlag = conflictFlag; }
 }

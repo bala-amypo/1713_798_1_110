@@ -1,21 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Resource {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
     private String resourceName;
+    private int capacity;
 
-    private String resourceType;
-    private Integer capacity;
-    private String location;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public Long getId() { return id; }
+    public String getResourceName() { return resourceName; }
+    public int getCapacity() { return capacity; }
 
-    // getters & setters
+    public void setResourceName(String resourceName) { this.resourceName = resourceName; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
 }
