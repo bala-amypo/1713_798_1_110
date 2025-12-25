@@ -18,11 +18,11 @@ public class ResourceAllocationController {
 
     @PostMapping("/{requestId}")
     public ResourceAllocation allocate(@PathVariable Long requestId) {
-        return service.allocate(requestId);
+        return service.autoAllocate(requestId);
     }
 
     @GetMapping
-    public List<ResourceAllocation> all() {
-        return service.getAll();
+    public List<ResourceAllocation> getAll() {
+        return service.getAllAllocations();
     }
 }
