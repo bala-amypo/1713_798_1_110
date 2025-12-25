@@ -1,6 +1,6 @@
-// AuthController.java
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.security.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username) {
-        return jwtUtil.generateToken(username);
+    public String login(@RequestBody AuthRequest req) {
+        return jwtUtil.generateToken(1L, req.getUsername(), "USER");
     }
 }
