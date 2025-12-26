@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,20 +11,14 @@ public class AllocationRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String ruleName;
 
-    private String ruleType; // "FIRSTAVAILABLE", "PRIORITYBASED", "ROUNDROBIN"
+    private String ruleType;
 
-    @Column(nullable = false)
-    private Integer priorityWeight;
+    private Integer priorityWeight = 0;
 
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public AllocationRule() {
     }
@@ -36,6 +29,7 @@ public class AllocationRule {
         this.priorityWeight = priorityWeight;
     }
 
+    // ✅ ADD THESE (THIS FIXES THE ERROR)
     public Long getId() {
         return id;
     }
@@ -71,9 +65,4 @@ public class AllocationRule {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
-

@@ -1,46 +1,51 @@
 package com.example.demo.dto;
 
-import java.time.LocalDateTime;
+public class RegisterRequest {
 
-public class ResourceRequestInputDto {
+    private String fullName;
+    private String email;
+    private String password;
+    private String role;
 
-    private String resourceType;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String purpose;
-
-    public ResourceRequestInputDto() {
+    public RegisterRequest() {
     }
 
-    public String getResourceType() {
-        return resourceType;
+    public RegisterRequest(String fullName, String email, String password, String role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+    public String getFullName() {
+        return fullName;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public String getEmail() {
+        return email;
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public String getPassword() {
+        return password;
     }
 
-    public String getPurpose() {
-        return purpose;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
