@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -16,25 +15,22 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-
-        SecurityScheme bearerScheme = new SecurityScheme()
-                .name("BearerAuth")
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT");
-
-        SecurityRequirement securityRequirement =
-                new SecurityRequirement().addList("BearerAuth");
-
         return new OpenAPI()
                 .info(new Info()
-                        .title("Digital Complaint Prioritization Engine")
-                        .version("1.0"))
+                        .title("Demo API")
+                        .version("1.0")
+                        .description("Spring Boot JWT API"))
                 .servers(List.of(
-                        new Server().url("https://9238.pro604cr.amypo.ai")
+                        new Server().url("http://localhost:8080")
                 ))
-                .components(new Components()
-                        .addSecuritySchemes("BearerAuth", bearerScheme))
-                .addSecurityItem(securityRequirement);
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .name("bearerAuth")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        ));
     }
 }
