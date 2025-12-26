@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -17,6 +18,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
 
         SecurityScheme bearerScheme = new SecurityScheme()
+                .name("BearerAuth")
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
                 .bearerFormat("JWT");
@@ -31,7 +33,8 @@ public class OpenApiConfig {
                 .servers(List.of(
                         new Server().url("https://9238.pro604cr.amypo.ai")
                 ))
-                .addSecurityItem(securityRequirement)
-                .schemaRequirement("BearerAuth", bearerScheme);
+                .components(new Components()
+                        .addSecuritySchemes("BearerAuth", bearerScheme))
+                .addSecurityItem(securityRequirement);
     }
 }
