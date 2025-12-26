@@ -1,3 +1,4 @@
+// src/main/java/com/example/demo/security/JwtUtil.java
 package com.example.demo.security;
 
 import io.jsonwebtoken.*;
@@ -9,30 +10,36 @@ import java.util.Date;
 public class JwtUtil {
 
     private final Key key;
-    private final long validityInMs;
+    private final long expirationMs;
 
-    public JwtUtil(String secretKey, long validityInMs) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
-        this.validityInMs = validityInMs;
+    public JwtUtil(String secret, long expirationMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expirationMs = expirationMs;
     }
 
-    public String generateToken(Long userId, String email, String role) {
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("userId", userId);
-        claims.put("role", role);
-
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMs);
-
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Claims parseClaims(String token) {
+    public String extractUsername(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
