@@ -13,48 +13,48 @@ import java.util.List;
 @Service
 public class ResourceRequestServiceImpl implements ResourceRequestService {
 
-    private final ResourceRequestRepository reqRepo;
-    private final UserRepository userRepo;
+    private final ResourceRequestRepository requestRepository;
+    private final UserRepository userRepository;
 
-    public ResourceRequestServiceImpl(
-            ResourceRequestRepository reqRepo,
-            UserRepository userRepo
-    ) {
-        this.reqRepo = reqRepo;
-        this.userRepo = userRepo;
+    public ResourceRequestServiceImpl(ResourceRequestRepository requestRepository, UserRepository userRepository) {
+        this.requestRepository = requestRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public ResourceRequest createRequest(Long userId, ResourceRequest request) {
-
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
         if (request.getStartTime().isAfter(request.getEndTime())) {
-            throw new IllegalArgumentException("Invalid time range");
+            throw new IllegalArgumentException("Start time must be before end time");
         }
 
         request.setRequestedBy(user);
-        request.setStatus("PENDING");
+        // Status defaults to PENDING in Entity, or we can explicit here.
+        if (request.getStatus() == null) {
+            request.setStatus("PENDING");
+        }
 
-        return reqRepo.save(request);
+        return requestRepository.save(request);
     }
 
     @Override
     public List<ResourceRequest> getRequestsByUser(Long userId) {
-        return reqRepo.findByRequestedBy_Id(userId);
+         
+        return requestRepository.findByRequestedBy_Id(userId);
     }
 
     @Override
     public ResourceRequest getRequest(Long id) {
-        return reqRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        return requestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + id));
     }
 
     @Override
     public ResourceRequest updateRequestStatus(Long requestId, String status) {
-        ResourceRequest req = getRequest(requestId);
-        req.setStatus(status);
-        return reqRepo.save(req);
+        ResourceRequest request = getRequest(requestId);
+        request.setStatus(status);
+        return requestRepository.save(request);
     }
 }

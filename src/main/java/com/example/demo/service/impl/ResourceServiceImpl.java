@@ -11,34 +11,34 @@ import java.util.List;
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
-    private final ResourceRepository resourceRepo;
+    private final ResourceRepository resourceRepository;
 
-    public ResourceServiceImpl(ResourceRepository resourceRepo) {
-        this.resourceRepo = resourceRepo;
+    public ResourceServiceImpl(ResourceRepository resourceRepository) {
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
     public Resource createResource(Resource resource) {
-
-        if (resource.getResourceType() == null || resource.getCapacity() == null || resource.getCapacity() < 1) {
-            throw new IllegalArgumentException("Invalid resource");
+        if (resource.getResourceType() == null || resource.getResourceType().trim().isEmpty()) {
+            throw new IllegalArgumentException("Resource type is required");
         }
-
-        if (resourceRepo.existsByResourceName(resource.getResourceName())) {
-            throw new IllegalArgumentException("resource already exists");
+        if (resource.getCapacity() == null || resource.getCapacity() < 1) {
+            throw new IllegalArgumentException("Capacity must be at least 1");
         }
-
-        return resourceRepo.save(resource);
+        if (resourceRepository.existsByResourceName(resource.getResourceName())) {
+            throw new IllegalArgumentException("Resource exists with name: " + resource.getResourceName());
+        }
+        return resourceRepository.save(resource);
     }
 
     @Override
     public Resource getResource(Long id) {
-        return resourceRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+        return resourceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
     }
 
     @Override
     public List<Resource> getAllResources() {
-        return resourceRepo.findAll();
+        return resourceRepository.findAll();
     }
 }
