@@ -1,4 +1,3 @@
-// ResourceRequestController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.ResourceRequest;
@@ -16,13 +15,20 @@ public class ResourceRequestController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResourceRequest request(@RequestBody ResourceRequest request) {
-        return service.createRequest(request);
+    @PostMapping("/{userId}")
+    public ResourceRequest create(@PathVariable Long userId,
+                                  @RequestBody ResourceRequest r) {
+        return service.createRequest(userId, r);
     }
 
-    @GetMapping
-    public List<ResourceRequest> getAll() {
-        return service.getAllRequests();
+    @GetMapping("/user/{userId}")
+    public List<ResourceRequest> byUser(@PathVariable Long userId) {
+        return service.getRequestsByUser(userId);
+    }
+
+    @PutMapping("/status/{id}")
+    public ResourceRequest update(@PathVariable Long id,
+                                  @RequestParam String status) {
+        return service.updateRequestStatus(id, status);
     }
 }

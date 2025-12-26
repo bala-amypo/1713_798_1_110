@@ -1,4 +1,3 @@
-// ResourceController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.Resource;
@@ -17,12 +16,17 @@ public class ResourceController {
     }
 
     @PostMapping
-    public Resource create(@RequestBody Resource resource) {
-        return service.createResource(resource);
+    public Resource create(@RequestBody Resource r) {
+        return service.createResource(r);
     }
 
     @GetMapping
-    public List<Resource> getAll() {
+    public List<Resource> all() {
         return service.getAllResources();
+    }
+
+    @GetMapping("/{id}")
+    public Resource get(@PathVariable Long id) {
+        return service.getResource(id);
     }
 }

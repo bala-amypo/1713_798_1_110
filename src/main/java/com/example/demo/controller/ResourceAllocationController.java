@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.entity.ResourceAllocation;
 import com.example.demo.service.ResourceAllocationService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,13 +15,13 @@ public class ResourceAllocationController {
         this.service = service;
     }
 
-    @PostMapping("/{requestId}")
-    public ResourceAllocation allocate(@PathVariable Long requestId) {
+    @PostMapping("/auto/{requestId}")
+    public ResourceAllocation auto(@PathVariable Long requestId) {
         return service.autoAllocate(requestId);
     }
 
     @GetMapping
-    public List<ResourceAllocation> getAll() {
+    public List<ResourceAllocation> all() {
         return service.getAllAllocations();
     }
 }

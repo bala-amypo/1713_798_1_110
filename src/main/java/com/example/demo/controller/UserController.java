@@ -1,4 +1,3 @@
-// UserController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
@@ -16,13 +15,13 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping
-    public User create(@RequestBody User user) {
-        return service.createUser(user);
-    }
-
     @GetMapping
     public List<User> getAll() {
         return service.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User get(@PathVariable Long id) {
+        return service.getUser(id);
     }
 }

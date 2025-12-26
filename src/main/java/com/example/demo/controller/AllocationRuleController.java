@@ -1,4 +1,3 @@
-// AllocationRuleController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.AllocationRule;
@@ -17,12 +16,17 @@ public class AllocationRuleController {
     }
 
     @PostMapping
-    public AllocationRule create(@RequestBody AllocationRule rule) {
-        return service.createRule(rule);
+    public AllocationRule create(@RequestBody AllocationRule r) {
+        return service.createRule(r);
     }
 
     @GetMapping
-    public List<AllocationRule> getAll() {
+    public List<AllocationRule> all() {
         return service.getAllRules();
+    }
+
+    @GetMapping("/{id}")
+    public AllocationRule get(@PathVariable Long id) {
+        return service.getRule(id);
     }
 }
