@@ -11,4 +11,3 @@ public interface ResourceAllocationService {
 
     List<ResourceAllocation> getAllAllocations();
 }
-
