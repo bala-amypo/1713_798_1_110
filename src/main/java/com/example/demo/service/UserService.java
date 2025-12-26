@@ -11,5 +11,5 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User getByEmail(String email);
+    User getUserByEmail(String email);
 }

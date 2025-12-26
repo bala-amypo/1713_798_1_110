@@ -11,24 +11,30 @@ import java.util.List;
 @Service
 public class AllocationRuleServiceImpl implements AllocationRuleService {
 
-    private final AllocationRuleRepository repo;
+    private final AllocationRuleRepository ruleRepo;
 
-    public AllocationRuleServiceImpl(AllocationRuleRepository repo) {
-        this.repo = repo;
+    public AllocationRuleServiceImpl(AllocationRuleRepository ruleRepo) {
+        this.ruleRepo = ruleRepo;
     }
 
-    public AllocationRule createRule(AllocationRule r) {
-        if (repo.existsByRuleName(r.getRuleName()))
-            throw new IllegalArgumentException("exists");
-        return repo.save(r);
+    @Override
+    public AllocationRule createRule(AllocationRule rule) {
+
+        if (ruleRepo.existsByRuleName(rule.getRuleName())) {
+            throw new IllegalArgumentException("rule already exists");
+        }
+
+        return ruleRepo.save(rule);
     }
 
+    @Override
     public AllocationRule getRule(Long id) {
-        return repo.findById(id)
+        return ruleRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 
+    @Override
     public List<AllocationRule> getAllRules() {
-        return repo.findAll();
+        return ruleRepo.findAll();
     }
 }

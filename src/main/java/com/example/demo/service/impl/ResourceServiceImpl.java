@@ -11,28 +11,34 @@ import java.util.List;
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
-    private final ResourceRepository repo;
+    private final ResourceRepository resourceRepo;
 
-    public ResourceServiceImpl(ResourceRepository repo) {
-        this.repo = repo;
+    public ResourceServiceImpl(ResourceRepository resourceRepo) {
+        this.resourceRepo = resourceRepo;
     }
 
-    public Resource createResource(Resource r) {
-        if (r.getCapacity() == null || r.getCapacity() < 1)
-            throw new IllegalArgumentException();
+    @Override
+    public Resource createResource(Resource resource) {
 
-        if (repo.existsByResourceName(r.getResourceName()))
-            throw new IllegalArgumentException("exists");
+        if (resource.getResourceType() == null || resource.getCapacity() == null || resource.getCapacity() < 1) {
+            throw new IllegalArgumentException("Invalid resource");
+        }
 
-        return repo.save(r);
+        if (resourceRepo.existsByResourceName(resource.getResourceName())) {
+            throw new IllegalArgumentException("resource already exists");
+        }
+
+        return resourceRepo.save(resource);
     }
 
+    @Override
     public Resource getResource(Long id) {
-        return repo.findById(id)
+        return resourceRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
     }
 
+    @Override
     public List<Resource> getAllResources() {
-        return repo.findAll();
+        return resourceRepo.findAll();
     }
 }

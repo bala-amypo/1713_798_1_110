@@ -1,61 +1,53 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.User;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-
-import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repo;
-    private final PasswordEncoder encoder;
+    private final UserRepository userRepo;
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    // Spring constructor
-    @Autowired
-    public UserServiceImpl(UserRepository repo, PasswordEncoder encoder) {
-        this.repo = repo;
-        this.encoder = encoder;
-    }
-
-    // TestNG constructor
-    public UserServiceImpl(UserRepository repo) {
-        this.repo = repo;
-        this.encoder = new BCryptPasswordEncoder();
+    public UserServiceImpl(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
-    public User registerUser(User u) {
-        if (repo.existsByEmail(u.getEmail()))
-            throw new IllegalArgumentException("exists");
+    public User registerUser(User user) {
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("email already exists");
+        }
 
-        if (u.getRole() == null)
-            u.setRole("USER");
+        if (user.getRole() == null) {
+            user.setRole("USER");
+        }
 
-        u.setPassword(encoder.encode(u.getPassword()));
-        return repo.save(u);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userRepo.save(user);
     }
 
     @Override
     public User getUser(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public List<User> getAllUsers() {
-        return repo.findAll();
+        return userRepo.findAll();
     }
 
     @Override
-    public User getByEmail(String email) {
-        return repo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User getUserByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }
