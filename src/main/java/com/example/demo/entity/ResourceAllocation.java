@@ -5,28 +5,20 @@ import java.time.LocalDateTime;
 
 @Entity
 public class ResourceAllocation {
+    @Id @GeneratedValue private Long id;
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    @ManyToOne private Resource resource;
+    @OneToOne private ResourceRequest request;
 
-    @ManyToOne
-    private Resource resource;
-
-    @ManyToOne
-    private ResourceRequest request;
-
-    private boolean conflictFlag;
+    private Boolean conflictFlag=false;
     private String notes;
     private LocalDateTime allocatedAt = LocalDateTime.now();
 
-    public Resource getResource() { return resource; }
-    public String getNotes() { return notes; }
-    public LocalDateTime getAllocatedAt() { return allocatedAt; }
+    public ResourceAllocation(){}
 
-    public void setResource(Resource resource) { this.resource = resource; }
-    public void setRequest(ResourceRequest request) { this.request = request; }
-    public void setConflictFlag(boolean conflictFlag) { this.conflictFlag = conflictFlag; }
-    public void setNotes(String notes) { this.notes = notes; }
-    public void setAllocatedAt(LocalDateTime allocatedAt) { this.allocatedAt = allocatedAt; }
+    public void setResource(Resource r){resource=r;}
+    public void setRequest(ResourceRequest r){request=r;}
+    public LocalDateTime getAllocatedAt(){return allocatedAt;}
+    public String getNotes(){return notes;}
+    public void setNotes(String n){notes=n;}
 }

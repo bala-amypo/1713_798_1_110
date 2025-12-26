@@ -1,37 +1,29 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class User {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
+    @Id @GeneratedValue private Long id;
     private String fullName;
-    private String email;
+    @Column(unique = true) private String email;
     private String password;
-    private String role;
+    private String role = "USER";
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public User() {}
+    public User(){}
+    public User(String f,String e,String p,String r){fullName=f;email=e;password=p;role=r;}
 
-    public User(String name, String email, String password, String role) {
-        this.fullName = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    public Long getId() { return id; }
-    public String getFullName() { return fullName; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-    public String getRole() { return role; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(String role) { this.role = role; }
+    // getters/setters
+    public Long getId(){return id;}
+    public void setId(Long id){this.id=id;}
+    public String getEmail(){return email;}
+    public void setEmail(String e){email=e;}
+    public String getPassword(){return password;}
+    public void setPassword(String p){password=p;}
+    public String getRole(){return role;}
+    public void setRole(String r){role=r;}
+    public String getFullName(){return fullName;}
+    public void setFullName(String f){fullName=f;}
 }

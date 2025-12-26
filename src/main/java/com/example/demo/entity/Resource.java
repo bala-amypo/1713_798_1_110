@@ -4,21 +4,20 @@ import jakarta.persistence.*;
 
 @Entity
 public class Resource {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    private String resourceName;
+    @Id @GeneratedValue private Long id;
+    @Column(unique=true) private String resourceName;
     private String resourceType;
-    private int capacity;
+    private Integer capacity;
+    private String location;
 
-    public Long getId() { return id; }
-    public String getResourceName() { return resourceName; }
-    public String getResourceType() { return resourceType; }
-    public int getCapacity() { return capacity; }
+    public Resource(){}
 
-    public void setResourceName(String resourceName) { this.resourceName = resourceName; }
-    public void setResourceType(String resourceType) { this.resourceType = resourceType; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
+    // getters/setters
+    public Long getId(){return id;}
+    public String getResourceName(){return resourceName;}
+    public void setResourceName(String r){resourceName=r;}
+    public String getResourceType(){return resourceType;}
+    public void setResourceType(String r){resourceType=r;}
+    public Integer getCapacity(){return capacity;}
+    public void setCapacity(Integer c){capacity=c;}
 }

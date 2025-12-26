@@ -4,14 +4,17 @@ import jakarta.persistence.*;
 
 @Entity
 public class AllocationRule {
+    @Id @GeneratedValue private Long id;
+    @Column(unique=true) private String ruleName;
+    private String ruleType;
+    private Integer priorityWeight=0;
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    public AllocationRule(){}
 
-    private String ruleName;
-
-    public String getRuleName() {
-        return ruleName;
-    }
+    public void setRuleName(String r){ruleName=r;}
+    public String getRuleName(){return ruleName;}
+    public void setRuleType(String r){ruleType=r;}
+    public String getRuleType(){return ruleType;}
+    public void setPriorityWeight(Integer p){priorityWeight=p;}
+    public Integer getPriorityWeight(){return priorityWeight;}
 }
