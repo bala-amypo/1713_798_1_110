@@ -9,62 +9,49 @@ import com.example.demo.repository.ResourceRepository;
 import com.example.demo.repository.ResourceRequestRepository;
 import com.example.demo.service.ResourceAllocationService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
 @Service
 public class ResourceAllocationServiceImpl implements ResourceAllocationService {
 
-    private final ResourceRequestRepository requestRepository;
-    private final ResourceRepository resourceRepository;
-    private final ResourceAllocationRepository allocationRepository;
+    private final ResourceRequestRepository reqRepo;
+    private final ResourceRepository resourceRepo;
+    private final ResourceAllocationRepository allocRepo;
 
-    public ResourceAllocationServiceImpl(ResourceRequestRepository requestRepository,
-            ResourceRepository resourceRepository,
-            ResourceAllocationRepository allocationRepository) {
-        this.requestRepository = requestRepository;
-        this.resourceRepository = resourceRepository;
-        this.allocationRepository = allocationRepository;
+    public ResourceAllocationServiceImpl(ResourceRequestRepository reqRepo,
+                                         ResourceRepository resourceRepo,
+                                         ResourceAllocationRepository allocRepo) {
+        this.reqRepo = reqRepo;
+        this.resourceRepo = resourceRepo;
+        this.allocRepo = allocRepo;
     }
 
     @Override
     public ResourceAllocation autoAllocate(Long requestId) {
-        ResourceRequest request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
-        if (!"APPROVED".equalsIgnoreCase(request.getStatus())) {
-            // "For a successful allocation, set... allocatedAt".
-            // Often allocation implies finding a slot.
-            // Prompt says "Find candidate resources using findByResourceType... if none
-            // throw exception".
+        ResourceRequest request = reqRepo.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+
+        List<Resource> resources = resourceRepo.findByResourceType(request.getResourceType());
+
+        if (resources.isEmpty()) {
+            throw new IllegalArgumentException("No resource available");
         }
-
-        List<Resource> candidates = resourceRepository.findByResourceType(request.getResourceType());
-        if (candidates.isEmpty()) {
-            throw new ResourceNotFoundException("No resources found for type: " + request.getResourceType());
-        }
-
-        // Simple strategy: pick first for "auto allocate" demo, as real logic needs
-        // complex availability checks.
-        Resource selectedResource = candidates.get(0);
 
         ResourceAllocation allocation = new ResourceAllocation();
-        allocation.setResource(selectedResource);
         allocation.setRequest(request);
-        allocation.setConflictFlag(false);
-        allocation.setNotes("Auto-allocated via policy");
+        allocation.setResource(resources.get(0));
 
-        return allocationRepository.save(allocation);
+        return allocRepo.save(allocation);
     }
 
     @Override
     public ResourceAllocation getAllocation(Long id) {
-        return allocationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Allocation not found with id: " + id));
+        return allocRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Allocation not found"));
     }
 
     @Override
     public List<ResourceAllocation> getAllAllocations() {
-        return allocationRepository.findAll();
+        return allocRepo.findAll();
     }
 }
