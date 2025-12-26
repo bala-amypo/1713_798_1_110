@@ -1,32 +1,31 @@
+// ResourceController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.Resource;
 import com.example.demo.service.ResourceService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController {
 
-    private final ResourceService service;
-
-    public ResourceController(ResourceService service) {
-        this.service = service;
-    }
+    private final ResourceService resourceService;
+    public ResourceController(ResourceService resourceService) { this.resourceService = resourceService; }
 
     @PostMapping
     public Resource create(@RequestBody Resource r) {
-        return service.createResource(r);
+        return resourceService.createResource(r);
     }
 
     @GetMapping
-    public List<Resource> all() {
-        return service.getAllResources();
+    public List<Resource> getAll() {
+        return resourceService.getAllResources();
     }
 
     @GetMapping("/{id}")
     public Resource get(@PathVariable Long id) {
-        return service.getResource(id);
+        return resourceService.getResource(id);
     }
 }

@@ -1,27 +1,33 @@
+// ResourceAllocationController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.ResourceAllocation;
 import com.example.demo.service.ResourceAllocationService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/allocations")
 public class ResourceAllocationController {
 
-    private final ResourceAllocationService service;
-
-    public ResourceAllocationController(ResourceAllocationService service) {
-        this.service = service;
+    private final ResourceAllocationService allocationService;
+    public ResourceAllocationController(ResourceAllocationService allocationService) {
+        this.allocationService = allocationService;
     }
 
     @PostMapping("/auto/{requestId}")
     public ResourceAllocation auto(@PathVariable Long requestId) {
-        return service.autoAllocate(requestId);
+        return allocationService.autoAllocate(requestId);
     }
 
     @GetMapping
     public List<ResourceAllocation> all() {
-        return service.getAllAllocations();
+        return allocationService.getAllAllocations();
+    }
+
+    @GetMapping("/{id}")
+    public ResourceAllocation get(@PathVariable Long id) {
+        return allocationService.getAllocation(id);
     }
 }
