@@ -7,25 +7,27 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repo;
+    private UserRepository repo;
     private PasswordEncoder encoder;
 
-    // ✅ REQUIRED FOR TestNG (1-arg constructor)
-    public UserServiceImpl(UserRepository repo) {
-        this.repo = repo;
-        this.encoder = new BCryptPasswordEncoder();
-    }
-
-    // ✅ REQUIRED FOR Spring DI (2-arg constructor)
+    // ✅ REQUIRED by Spring (explicit)
+    @Autowired
     public UserServiceImpl(UserRepository repo, PasswordEncoder encoder) {
         this.repo = repo;
         this.encoder = encoder;
+    }
+
+    // ✅ REQUIRED by TestNG
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
+        this.encoder = new BCryptPasswordEncoder();
     }
 
     @Override
