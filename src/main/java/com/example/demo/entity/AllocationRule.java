@@ -1,8 +1,11 @@
+// AllocationRule.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "allocation_rules")
 public class AllocationRule {
 
     @Id
@@ -13,41 +16,28 @@ public class AllocationRule {
     private String ruleName;
 
     private String ruleType;
+
     private Integer priorityWeight = 0;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public AllocationRule() {}
 
-    // 🔹 REQUIRED by TestNG
-    public Long getId() {
-        return id;
-    }
-
-    // 🔹 REQUIRED by TestNG
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
+    public AllocationRule(String ruleName, String ruleType, Integer priorityWeight) {
         this.ruleName = ruleName;
-    }
-
-    public String getRuleType() {
-        return ruleType;
-    }
-
-    public void setRuleType(String ruleType) {
         this.ruleType = ruleType;
-    }
-
-    public Integer getPriorityWeight() {
-        return priorityWeight;
-    }
-
-    public void setPriorityWeight(Integer priorityWeight) {
         this.priorityWeight = priorityWeight;
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getRuleName() { return ruleName; }
+    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+
+    public String getRuleType() { return ruleType; }
+    public void setRuleType(String ruleType) { this.ruleType = ruleType; }
+
+    public Integer getPriorityWeight() { return priorityWeight; }
+    public void setPriorityWeight(Integer priorityWeight) { this.priorityWeight = priorityWeight; }
 }
