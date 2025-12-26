@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Resource;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ResourceRepository;
 import com.example.demo.service.ResourceService;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,21 @@ public class ResourceServiceImpl implements ResourceService {
         this.repo = repo;
     }
 
-    @Override
     public Resource createResource(Resource r) {
-        if (r.getResourceName() == null || r.getCapacity() <= 0)
-            throw new RuntimeException("Invalid resource");
+        if (r.getCapacity() == null || r.getCapacity() < 1)
+            throw new IllegalArgumentException();
 
         if (repo.existsByResourceName(r.getResourceName()))
-            throw new RuntimeException("Duplicate resource");
+            throw new IllegalArgumentException("exists");
 
         return repo.save(r);
     }
 
-    @Override
+    public Resource getResource(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+    }
+
     public List<Resource> getAllResources() {
         return repo.findAll();
     }
