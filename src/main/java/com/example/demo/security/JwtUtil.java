@@ -1,34 +1,38 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
+import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
 
     private final Key key;
-    private final long expirationMs;
+    private final long validityInMs;
 
-    public JwtUtil(String secret, long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expirationMs = expirationMs;
+
+    public JwtUtil(String secretKey, long validityInMs) {
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        this.validityInMs = validityInMs;
     }
 
-    // ✅ MATCHES AuthController (3 params)
-    public String generateToken(Long userId, String username, String role) {
+    public String generateToken(Long userId, String email, String role) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMs);
+
         return Jwts.builder()
+                .setSubject(email)
                 .claim("userId", userId)
                 .claim("role", role)
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .setIssuedAt(now)
+                .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // ✅ USED BY FILTER
     public Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -36,13 +40,5 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-    public boolean validateToken(String token) {
-        try {
-            parseClaims(token);
-            return true;
-        } catch (JwtException e) {
-            return false;
-        }
-    }
+    
 }
