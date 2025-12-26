@@ -29,7 +29,7 @@ public class OpenApiConfig {
                         .title("Digital Complaint Prioritization Engine")
                         .version("1.0"))
                 .servers(List.of(
-                        new Server().url("https://9122.pro604cr.amypo.ai")
+                        new Server().url("https://9238.pro604cr.amypo.ai")
                 ))
                 .addSecurityItem(securityRequirement)
                 .schemaRequirement("BearerAuth", bearerScheme);
