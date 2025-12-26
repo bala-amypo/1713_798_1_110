@@ -10,7 +10,6 @@ public interface ResourceRequestRepository extends JpaRepository<ResourceRequest
 
     List<ResourceRequest> findByRequestedBy_Id(Long userId);
 
-    // 🔹 REQUIRED by TestNG
     List<ResourceRequest> findByStartTimeBetween(
             LocalDateTime start,
             LocalDateTime end
