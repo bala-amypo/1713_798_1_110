@@ -1,51 +1,51 @@
+// src/main/java/com/example/demo/dto/ResourceRequestInputDto.java
 package com.example.demo.dto;
 
-public class RegisterRequest {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
-    private String fullName;
-    private String email;
-    private String password;
-    private String role;
+public class ResourceRequestInputDto {
 
-    public RegisterRequest() {
+    @NotNull
+    private Long userId;
+
+    @NotNull
+    private Long resourceId;
+
+    @NotNull
+    @Min(1)
+    private Integer quantity;
+
+    public ResourceRequestInputDto() {
     }
 
-    public RegisterRequest(String fullName, String email, String password, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    public ResourceRequestInputDto(Long userId, Long resourceId, Integer quantity) {
+        this.userId = userId;
+        this.resourceId = resourceId;
+        this.quantity = quantity;
     }
 
-    public String getFullName() {
-        return fullName;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getEmail() {
-        return email;
+    public Long getResourceId() {
+        return resourceId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
