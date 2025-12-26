@@ -1,78 +1,61 @@
-package com.example.demo.entity;
+package com.example.demo.service.impl;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 
-@Entity
-@Table(name = "users")
-public class User {
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import java.util.List;
 
-    @Column(unique = true)
-    private String email;
+@Service
+public class UserServiceImpl implements UserService {
 
-    private String fullName;
-    private String password;
-    private String role;
+    private final UserRepository repo;
+    private final PasswordEncoder encoder;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    // ✅ Required by JPA
-    public User() {}
-
-    // ✅ Required by AuthController
-    public User(String fullName, String email, String password, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    // Spring constructor
+    @Autowired
+    public UserServiceImpl(UserRepository repo, PasswordEncoder encoder) {
+        this.repo = repo;
+        this.encoder = encoder;
     }
 
-    // getters & setters
-    public Long getId() {
-        return id;
+    // TestNG constructor
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
+        this.encoder = new BCryptPasswordEncoder();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public User registerUser(User u) {
+        if (repo.existsByEmail(u.getEmail()))
+            throw new IllegalArgumentException("exists");
+
+        if (u.getRole() == null)
+            u.setRole("USER");
+
+        u.setPassword(encoder.encode(u.getPassword()));
+        return repo.save(u);
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public User getUser(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public List<User> getAllUsers() {
+        return repo.findAll();
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    @Override
+    public User getByEmail(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
